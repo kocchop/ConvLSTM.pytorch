@@ -23,6 +23,9 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
+trainDataSetDir = '~/ConvLSTM.pytorch/fire_train'
+testDataSetDir = '~/ConvLSTM.pytorch/fire_test'
+
 def checkDataLoader(config, logger, train_loader):
 
     num_batchs = len(train_loader)
@@ -54,20 +57,26 @@ def main():
     criterion = BinaryDiceLoss().to(config.device)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
-    train_dataset = MovingMNISTDataset(config, split='train')
+    # train_dataset = MovingMNISTDataset(config, split='train')
+    # train_loader = DataLoader(train_dataset, batch_size=config.train_batch_size,
+                            # num_workers=config.num_workers, shuffle=True, pin_memory=True)
+                            
+    train_dataset = WildFireDataset(config, logger, trainDataSetDir, split='train')
     train_loader = DataLoader(train_dataset, batch_size=config.train_batch_size,
                             num_workers=config.num_workers, shuffle=True, pin_memory=True)
+    
+    
+    # valid_dataset = MovingMNISTDataset(config, split='valid')
+    # valid_loader = DataLoader(valid_dataset, batch_size=config.valid_batch_size,
+                            # num_workers=config.num_workers, shuffle=False, pin_memory=True)
+    # test_dataset = MovingMNISTDataset(config, split='test')
+    # test_loader = DataLoader(test_dataset, batch_size=config.test_batch_size,
+                            # num_workers=config.num_workers, shuffle=False, pin_memory=True)
                             
-    checkDataLoader(config, logger, train_loader)
-    
-    exit()
-    
-    valid_dataset = MovingMNISTDataset(config, split='valid')
-    valid_loader = DataLoader(valid_dataset, batch_size=config.valid_batch_size,
-                            num_workers=config.num_workers, shuffle=False, pin_memory=True)
-    test_dataset = MovingMNISTDataset(config, split='test')
+    test_dataset = WildFireDateset(config, logger, testDataSetDir, split='test')
     test_loader = DataLoader(test_dataset, batch_size=config.test_batch_size,
                             num_workers=config.num_workers, shuffle=False, pin_memory=True)
+
     train_records, valid_records, test_records = [], [], []
     for epoch in range(config.epochs):
         epoch_records = train(config, logger, epoch, model, train_loader, criterion, optimizer)

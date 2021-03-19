@@ -39,7 +39,7 @@ class WildFireDataset(Dataset):
         self.paths = get_file_paths(root)
         
         self.image_size = config.image_size
-        self.input_size = config.input_size
+        # self.input_size = config.input_size
 
         logger.info('Loaded {} samples ({})'.format(self.__len__(), split))
 

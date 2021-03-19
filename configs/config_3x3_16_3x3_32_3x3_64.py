@@ -16,7 +16,7 @@ class Config:
     if torch.cuda.is_available():
         num_workers = 8 * len(gpus)
         # train_batch_size = 64
-        train_batch_size = 2
+        train_batch_size = 4
         valid_batch_size = 2 * train_batch_size
         test_batch_size = 2 * train_batch_size
     else:
@@ -30,18 +30,18 @@ class Config:
     num_frames_output = 10
     # image_size = (28, 28)
     image_size = (110, 110)
-    input_size = (64, 64)
-    step_length = 0.1
-    num_objects = [3]
-    display = 10
-    draw = 10
-    train_dataset = (0, 10000)
-    valid_dataset = (10000, 12000)
-    test_dataset = (12000, 15000)
+    # input_size = (64, 64)
+    # step_length = 0.1
+    # num_objects = [3]
+    # display = 10
+    # draw = 10
+    # train_dataset = (0, 10000)
+    # valid_dataset = (10000, 12000)
+    # test_dataset = (12000, 15000)
     epochs = 100
 
     # (type, activation, in_ch, out_ch, kernel_size, padding, stride)
-    encoder = [('conv', 'leaky', 1, 16, 3, 1, 2),
+    encoder = [('conv', 'leaky', 7, 16, 3, 1, 2),
              ('convlstm', '', 16, 16, 3, 1, 1),
              ('conv', 'leaky', 16, 32, 3, 1, 2),
              ('convlstm', '', 32, 32, 3, 1, 1),
