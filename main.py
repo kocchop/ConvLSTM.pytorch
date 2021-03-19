@@ -23,6 +23,19 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
+def checkDataLoader(config, logger, train_loader):
+
+    num_batchs = len(train_loader)
+    for batch_idx, (inputs, targets) in enumerate(train_loader):
+        
+        print(inputs.max())
+        inputs = inputs.float().to(config.device)
+        targets = targets.float().to(config.device)
+        
+        print("The input shape is {} and target shape is {}".format(inputs.shape, targets.shape))
+        print("The data type is {}".format(type(inputs)))
+        
+        break
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', type=str, default='3x3_16_3x3_32_3x3_64')
@@ -44,6 +57,11 @@ def main():
     train_dataset = MovingMNISTDataset(config, split='train')
     train_loader = DataLoader(train_dataset, batch_size=config.train_batch_size,
                             num_workers=config.num_workers, shuffle=True, pin_memory=True)
+                            
+    checkDataLoader(config, logger, train_loader)
+    
+    exit()
+    
     valid_dataset = MovingMNISTDataset(config, split='valid')
     valid_loader = DataLoader(valid_dataset, batch_size=config.valid_batch_size,
                             num_workers=config.num_workers, shuffle=False, pin_memory=True)
